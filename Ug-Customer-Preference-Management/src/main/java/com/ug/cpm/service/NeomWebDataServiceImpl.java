@@ -17,7 +17,7 @@ public class NeomWebDataServiceImpl implements NeomWebDataService {
 
 	@Override
 	public void addCustomer(Customer customer) {
-		
+	
 		customerRepository.save(customer);
 	}
 
