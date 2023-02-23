@@ -227,6 +227,7 @@ pipeline {
         container('build') {
             withSonarQubeEnv('sonar-server') {
               checkout scm
+	       sh 'pwd&& ls -lrth'
               sh '''
                
                 /home/jenkins/agent/workspace/Ug-Customer-Preference-Management/gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
