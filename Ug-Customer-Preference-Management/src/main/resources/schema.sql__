@@ -1,5 +1,5 @@
-CREATE TABLE T_CPM_Customer(
-	Customer_Id INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE T_CPM_CustomerMaster(
+	Customer_Id INT NOT NULL,
 	Customer_FirstName VARCHAR(500) NULL,
 	Customer_LastName VARCHAR(500) NULL,
 	Customer_MiddleName VARCHAR(500) NULL,
@@ -16,21 +16,19 @@ CREATE TABLE T_CPM_Customer(
 	Customer_MaritalStatus VARCHAR(50) NULL,
 	Customer_Ethnicity VARCHAR(200) NULL,
 	Hobbies VARCHAR(500) NULL,
-	Customer_Type VARCHAR(200) NULL,	-- Primary Guest | Family Member
-	CustomerId_SourceSystem INT NULL,
-	PrimaryGuest_Customer_Id INT NULL,	-- Primary Guest For Family Member
-	PrimaryGuest_CustomerRelationship VARCHAR(200) NULL,	-- Husband | Wife | Son | Daughter
+	Customer_Category VARCHAR(200) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	PrimaryGuest_Customer_Id INT NULL,
+	PrimaryGuest_CustomerRelationship VARCHAR(200) NULL,
 	Image_Path	VARCHAR(500) NULL,
-	Customer_Id_IDAM VARCHAR(200) NULL,	-- For Future Use
-	VisitorPass_Id VARCHAR(200) NULL,	-- For Future Use
-	National_Id VARCHAR(200) NULL,		-- For Future Use
-	NEOM_Id VARCHAR(200) NULL,			-- For Future Use
-	MELD_Consent VARCHAR(1) NULL,	-- Y | N
+	VisitorPass_Id VARCHAR(200) NULL,
+	National_Id VARCHAR(200) NULL,
+	NEOM_Id VARCHAR(200) NULL,
+	Consent_Data VARCHAR(1) NULL,
 	Created_On DATETIME NULL DEFAULT current_timestamp(),
 	Last_Updated_On DATETIME NULL,
 	PRIMARY KEY (Customer_Id)
 );
-
 CREATE TABLE T_CPM_Preference(
 	Preference_Id INT NOT NULL,
 	Preference_Type VARCHAR(500) NULL,	-- Lifestyle | Sport | Privacy | Restaurant | Food

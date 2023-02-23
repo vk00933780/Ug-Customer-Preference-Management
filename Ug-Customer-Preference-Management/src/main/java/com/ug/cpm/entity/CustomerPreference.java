@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "T_CPM_Customerpreference")
+@Table(name = "T_CPM_CustomerPreference")
 public class CustomerPreference {
 
 	@Id
@@ -54,8 +54,8 @@ public class CustomerPreference {
 	@Column(name = "Last_Updated_On")
 	private String updatedDate;
 
-	@ManyToOne
-	@JoinColumn(name = "Customer_Id", referencedColumnName = "Customer_Id")
-	private Customer customer;
+	//@ManyToOne
+	//@JoinColumn(name = "Customer_Id", referencedColumnName = "Customer_Id")
+	//private Customer customer;
 
 }

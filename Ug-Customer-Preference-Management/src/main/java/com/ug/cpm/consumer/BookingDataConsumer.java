@@ -1,6 +1,7 @@
 package com.ug.cpm.consumer;
 
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.ug.cpm.entity.Customer;
 import com.ug.cpm.service.NeomWebDataService;
 
@@ -17,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/cpm")
-//@AllArgsConstructor
 @Slf4j
 public class BookingDataConsumer {
 	
@@ -25,10 +26,10 @@ public class BookingDataConsumer {
 	NeomWebDataService neomDataService;
 	
 	@PostMapping
-	public void saveCustomerData(@RequestBody Customer customer) {
+	public void saveCustomerData(@RequestBody String customerJson) {
 		
-		log.info("in save customer : "+ customer.toString());
-		neomDataService.addCustomer(customer);
+		log.info("in save customer : "+ customerJson);
+		//neomDataService.addCustomer(customer);
 	}
 	
 	@PostMapping("/{customerId}")

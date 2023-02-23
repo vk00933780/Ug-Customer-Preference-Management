@@ -21,12 +21,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "T_CPM_Customer")
+@Table(name = "T_CPM_CustomerMaster")
 public class Customer {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//private int id;
 	@Column(name = "Customer_Id", nullable = false)
 	private int customerId;
 	@Column(name = "Customer_Firstname")
@@ -65,8 +63,6 @@ public class Customer {
 	private List<String> hobbies;
 	@Column(name = "Customer_Type")
 	private String customerType;
-	@Column(name = "Customerid_Sourcesystem")
-	private String sourceName;
 	@Column(name = "Primaryguest_Customer_Id")
 	private int primaryGuestId;
 	@Column(name = "Primaryguest_Customerrelationship")
@@ -77,8 +73,8 @@ public class Customer {
 	@Column(name = "Last_Updated_On")
 	private String updatedDated;
 	
-	@OneToMany
-	private List<CustomerPreference> customerPreference;
+	//@OneToMany
+	//private List<CustomerPreference> customerPreference;
 	
 	
 }
