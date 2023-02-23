@@ -231,7 +231,7 @@ pipeline {
                 #git clone $PROJECT_URL
                 #./gradle-simple/gradlew clean jacocoTestReport sonarqube
                 #./gradlew clean jacocoTestReport sonarqube
-                ./gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/sindalah-att-pipeline/backend/AssettechLog/iotsense sonarqube
+                ./gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
                 #./gradlew sonarqube
                 #./gradlew --info cleanTest test
 		# echo 'Running JUnit tests...'
@@ -262,7 +262,7 @@ pipeline {
         container('build1') {
           checkout scm
           sh 'echo "BEFORE CODE BUILD"'
-          sh 'mvn  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/sindalah-att-pipeline/backend/AssettechLog/iotsense clean install'
+          sh 'mvn  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management clean install'
 		sh "pwd && cd build && ls -lrth"
 		sh "date && ls -lrth /home/jenkins/agent/workspace/sindalah-att-pipeline/target/*"
         }
