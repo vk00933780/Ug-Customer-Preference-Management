@@ -229,6 +229,8 @@ pipeline {
               checkout scm
 	       sh 'pwd&& ls -lrth'
               sh '''
+	      apt install -y dos2unix
+	      dos2unix ./gradlew
                PATH=$PATH:/home/jenkins/agent/workspace/test-UD:.
 	       ls -lrth /home/jenkins/agent/workspace/test-UD/gradlew && pwd
                ./gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/test-UD/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
