@@ -230,8 +230,8 @@ pipeline {
 	       sh 'pwd&& ls -lrth'
               sh '''
                PATH=$PATH:/home/jenkins/agent/workspace/test-UD:.
-	       ls -lrth /home/jenkins/agent/workspace/test-UD/gradlew
-               /home/jenkins/agent/workspace/test-UD/gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/test-UD/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
+	       ls -lrth /home/jenkins/agent/workspace/test-UD/gradlew && pwd
+               ./gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/test-UD/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
               
                 hostname
                 find / -name gradlew 2>/dev/null
