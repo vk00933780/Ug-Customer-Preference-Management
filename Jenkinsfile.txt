@@ -230,7 +230,8 @@ pipeline {
 	       sh 'pwd&& ls -lrth'
               sh '''
                PATH=$PATH:/home/jenkins/agent/workspace/test-UD:.
-               ./gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/test-UD/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
+	       ls -lrth /home/jenkins/agent/workspace/test-UD/gradlew
+               /home/jenkins/agent/workspace/test-UD/gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/test-UD/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
               
                 hostname
                 find / -name gradlew 2>/dev/null
@@ -260,7 +261,7 @@ pipeline {
 	  sh 'pwd&& ls -lrth'
           sh 'mvn  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management clean install'
 		sh "pwd && cd build && ls -lrth"
-		sh "date && ls -lrth /home/jenkins/agent/workspace/sindalah-att-pipeline/target/*"
+		sh "date && ls -lrth "
         }
       }
     }
