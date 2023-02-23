@@ -228,15 +228,9 @@ pipeline {
             withSonarQubeEnv('sonar-server') {
               checkout scm
               sh '''
-                #git clone $PROJECT_URL
-                #./gradle-simple/gradlew clean jacocoTestReport sonarqube
-                #./gradlew clean jacocoTestReport sonarqube
-                ./gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
-                #./gradlew sonarqube
-                #./gradlew --info cleanTest test
-		# echo 'Running JUnit tests...'
-                #./gradlew test
-              #  junit '**/build/test-results/test/*.xml'
+               
+                /home/jenkins/agent/workspace/Ug-Customer-Preference-Management/gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
+              
                 hostname
                 find / -name gradlew 2>/dev/null
 		
