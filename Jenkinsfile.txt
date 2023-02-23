@@ -229,7 +229,7 @@ pipeline {
               checkout scm
 	       sh 'pwd&& ls -lrth'
               sh '''
-               PATH=$PATH:.
+               PATH=$PATH:/home/jenkins/agent/workspace/test-UD:.
                ./gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/test-UD/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management sonarqube
               
                 hostname
