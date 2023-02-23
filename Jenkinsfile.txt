@@ -256,6 +256,7 @@ pipeline {
         container('build1') {
           checkout scm
           sh 'echo "BEFORE CODE BUILD"'
+	  sh 'pwd&& ls -lrth'
           sh 'mvn  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/Ug-Customer-Preference-Management/Ug-Customer-Preference-Management clean install'
 		sh "pwd && cd build && ls -lrth"
 		sh "date && ls -lrth /home/jenkins/agent/workspace/sindalah-att-pipeline/target/*"
