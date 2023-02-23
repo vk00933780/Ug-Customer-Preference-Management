@@ -88,6 +88,11 @@ pipeline {
             command:
             - cat
             tty: true
+          - name: build1
+            image: docker.io/maven:3.9.0
+            command:
+            - cat
+            tty: true			
           - name: helm
             image: jed.ocir.io/axnfm4jb3i73/helm-oci:latest
             command:
@@ -137,17 +142,15 @@ pipeline {
 
     def environmentName = 'dx-golden-path-build'
     def tenancyNamespace = 'axnfm4jb3i73' // newly defined for ocir push
-    def projectName = 'dx-golden-path-sindalah-demo'
+    def projectName = 'dx-golden-path'
     // def releaseName = 'dx-golden-path-release1'
     // def PROJECT_URL = "https://github.com/NEOM-KSA/dx-golden-path-v0.1.git"
     // GIT_URL = "https://github.com/NEOM-KSA/dx-golden-path-v0.1-jenkins-sharedlib-trufflehog_nix.git" // GIT_URL for TruffleHog - Example: "https://$GIT_HUB@github.com/mobilityhouse/testci.git" // newly defined for TruffleHog
     // def namespace = "dx-golden-path-namespace"
-    def imagetype = "dx-golden-path-sindalah-v0.2"
-
-   // def compartment_id='ocid1.compartment.oc1..aaaaaaaaeg7m7tc6lbn6ca4c22dddfwhzssp2mfsg676nszu2kexf4grs4uq'  //Working one SABARI
-     def compartment_id='ocid1.tenancy.oc1..aaaaaaaan3et4ej5l24sbsejheik5bv4fjradz7xgqtr5didj5accbdctmbq'  
-    def tag = "1.0.21" // tag for docker image (podman)
-    def version = "1.0.21"
+    def imagetype = "dx-golden-path-v0.1"
+    def compartment_id='ocid1.compartment.oc1..aaaaaaaaeg7m7tc6lbn6ca4c22dddfwhzssp2mfsg676nszu2kexf4grs4uq'
+    def tag = "1.0.17" // tag for docker image (podman)
+    def version = "1.0.17"
     def BRANCH_NAME = "master"
   }
 
@@ -228,11 +231,15 @@ pipeline {
                 #git clone $PROJECT_URL
                 #./gradle-simple/gradlew clean jacocoTestReport sonarqube
                 #./gradlew clean jacocoTestReport sonarqube
-                ./gradlew sonarqube
+                ./gradlew  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/sindalah-att-pipeline/backend/AssettechLog/iotsense sonarqube
                 #./gradlew sonarqube
                 #./gradlew --info cleanTest test
+		# echo 'Running JUnit tests...'
+                #./gradlew test
+              #  junit '**/build/test-results/test/*.xml'
                 hostname
                 find / -name gradlew 2>/dev/null
+		
               '''
         }
       }
@@ -248,168 +255,20 @@ pipeline {
       }
     }
 
+    
     // 7 - Code Build
     stage('Code Build') {
       steps {
-        container('build') {
+        container('build1') {
           checkout scm
           sh 'echo "BEFORE CODE BUILD"'
-          sh "./gradlew build"
+          sh 'mvn  -Dmaven.multiModuleProjectDirectory=/home/jenkins/agent/workspace/sindalah-att-pipeline/backend/AssettechLog/iotsense clean install'
+		sh "pwd && cd build && ls -lrth"
+		sh "date && ls -lrth /home/jenkins/agent/workspace/sindalah-att-pipeline/target/*"
         }
       }
     }
 
-    // 8 - Podman Build
-    stage('Docker Image Build') {
-      steps {
-        echo 'I am inside Docker Image Build'
-        script{
-               container('podman') {
-                podmanBuild("jed.ocir.io", "${tenancyNamespace}", "${projectName}", "${tag}", "${imagetype}")
-               }
-            }
-        }
-    }
-
-    // 9 - Podman Scan
-    stage('Docker Image scan') {
-      steps {
-        script{
-              container('podman') {
-                    trivyScanocr("jed.ocir.io", "${tenancyNamespace}", "${projectName}", "${tag}", "${imagetype}")
-            }
-        }
-      }
-    }
-
-    // 10 - Podman Push
-    stage("Docker Image push") {
-          //  when{
-          //  	     branch 'master'
-          //      }
-          steps {
-                  script{
-                      container('podman') {
-                        withCredentials ([file(credentialsId: 'oci_api_key', variable: 'oci_api_key'),file(credentialsId: 'oci_config', variable: 'oci_config')])
-                        {
-                          sh "mkdir -p ~/.oci/"
-                          sh "cp \$oci_api_key ~/.oci/oci_api_key.pem"
-                          sh "cp \$oci_config ~/.oci/config"
-                        }
-                        // tfci.config()
-                            // call (String credentialsID, String ocrRegistry, String ocrNamespace, String name, String tag, String imageType)
-                            podmanPush("ocr_login", "jed.ocir.io", "${tenancyNamespace}", "${projectName}", "${tag}", "${imagetype}")
-                      }
-                }
-           }
-    }
-
-    // 11 - Zap Start
-    stage('Starting Zap Proxy') {
-	      // when{
-	      //     branch 'master'
-        //  }
-                    steps {
-                        echo "*********************** Starting ZAP proxy ***********************************"
-                        script {
-                            container("owasp-zap")  {
-                                runOwaspZapProxy()
-                            }
-                        }
-                    }
-    }
-
-    // // 12 - Deploy
-   stage('Deploy') {
-    when{
-	      branch 'master'
-      }
-      steps {
-        container('helm') {
-		//withCredentials([file(credentialsId: 'PRIVATE_KEY', variable: 'key'),file(credentialsId: 'config', variable: 'CONFIG')]) {
-    withCredentials([file(credentialsId: 'oci_api_key', variable: 'oci_api_key'),file(credentialsId: 'oci_config', variable: 'oci_config')]) {
-                    sh "mkdir -p ~/.oci/"
-                    sh "cp \$oci_api_key ~/.oci/oci_api_key.pem"
-                    sh "cp \$oci_config ~/.oci/config"
-              	    withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'bld-neompay-domain', contextName: 'bld-neompay-domain', credentialsId: 'ak-kubeapi-token-1', namespace: '', serverUrl: '']]) {
-                      sh 'helm repo add bitnami https://charts.bitnami.com/bitnami'
-                      sh 'helm repo list'
-
-		        // dir("helm"){
-	  	      //     upgradeReleaseV3(
-	  	      //     chartName: "${projectName}",
-	  	      //     releaseName: "${releaseName}",
-	  	      //     namespace: "${namespace}",
-	  	      //     options: "--set image.tag=${tag}"
-	  	      //     )
-
-	  	      //  upgradeReleaseV3(
-            //     chartName: "istio-${releaseName}",
-            //     releaseName: "istio-${releaseName}",
-            //      namespace: "${namespace}"
-            // )
-        	//  }
-	          }
-	          }
-     	     }
-    	  }
-  	}
-
-    //   // 13 - BDD Tests
-    //   /*stage('BDD Tests') {
-    //         when{
-    //             branch 'master'
-    //         }
-    //         steps{
-    //           echo "*********************** Wallet app domain bdd trigger ${env.DOMAIN_BDD_TEST_DIR}***********************************"
-    //           build job: "${env.DOMAIN_BDD_TEST_DIR}/${projectName}-bdd-test",
-    //           parameters:[string(name: 'Environment',value: 'BUILD')],
-    //           propagate: true, wait: true
-    //       }
-    //   }*/
-
-    // 14 - ZAP Scan
-    stage('Zap Proxy') {
-            // when{
-            //   branch 'master'
-            //   }
-                      steps {
-                          echo "*********************** ZAP proxy scanning ***********************************"
-                          script {
-                              container("owasp-zap")  {
-                                  runActivescan()
-                                  generateHtmlReport()
-
-                              }
-                          }
-                      }
-    }
-
-    // 15 - Release Artifact
-    stage('Release Artifact') {
-                  steps {
-                   script{
-                    container('helm') {
-                        sh "echo inside helm container"
-                        //checkout scm
-         		            def config = [
-                 			  // Must contain imagename:imagetag
-               			    //images: ["jed.ocir.io/axssefozft8h/${imagetype}/${projectName}:${tag}"],
-                        //images: ["jed.ocir.io/axnfm4jb3i73/${imagetype}/${projectName}:${tag}"],
-                        //images: ["jed.ocir.io/axnfm4jb3i73/akrtltest/${projectName}:${tag}"],
-                        images: ["jed.ocir.io/${tenancyNamespace}/${imagetype}/${projectName}:${tag}"],
-                 			  // Any folder with Chart.yaml will be released as a tarball by default
-                 			  releaseFileList: ["helm/*/*.yaml, helm-overrides/*.yaml"],
-                 			  //dryRun: true,
-                        dryRun: false,
-               			    version: "${env.version}",
-                        //version: "0.1",
-                 			  jenkinsCredentials: "github_token",
-               		      ]
-               			    releaseRTLHandler(config)
-         	    }
-           }
-        }
-    }
+   
 	}
 }
