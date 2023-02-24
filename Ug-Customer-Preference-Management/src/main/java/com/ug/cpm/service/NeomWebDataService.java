@@ -6,9 +6,11 @@ import com.ug.cpm.entity.Customer;
 
 public interface NeomWebDataService {
 	
-	void addCustomer(Customer customer);
-	void addAllCustomers(List<Customer> customers);
-	void updateCustomer(Customer customer, int customerId) throws Exception;
+	void saveCustomerData(String customerData) throws Exception;
+	void saveAllCustomerData(String customersData);
+	Customer updateCustomer(Customer customer, int customerId) throws Exception;
 	void deleteCustomer(int customerId) throws Exception;
+	Customer getCustomer(int customerId) throws Exception;
+	List<Customer> getAllCustomer();
 	
 }

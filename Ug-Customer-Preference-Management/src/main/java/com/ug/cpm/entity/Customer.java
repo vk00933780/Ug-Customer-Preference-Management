@@ -2,11 +2,10 @@ package com.ug.cpm.entity;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -22,6 +21,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "T_CPM_CustomerMaster")
+@JsonIgnoreProperties(value = {"preferences"})
 public class Customer {
 
 	@Id

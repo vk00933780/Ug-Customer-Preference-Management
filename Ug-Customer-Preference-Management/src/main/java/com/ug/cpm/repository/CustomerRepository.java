@@ -6,4 +6,6 @@ import com.ug.cpm.entity.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 
+	Customer findByCustomerId(int customerId);
+
 }
