@@ -1,3 +1,49 @@
+-- ///////////////////////////////////////////////////////////
+--               
+--		             Unified Guest DataBase                            
+--                                   
+-- ///////////////////////////////////////////////////////////
+
+-- -----------------------------------------------------
+-- Database UG
+-- -----------------------------------------------------
+
+use UG;
+
+DROP TABLE IF EXISTS T_CPM_CustomerRelative;
+DROP TABLE IF EXISTS T_CPM_CustomerDiagnosisHistory;
+DROP TABLE IF EXISTS T_CPM_CustomerHealth;
+DROP TABLE IF EXISTS T_CPM_CustomerCommunity;
+DROP TABLE IF EXISTS T_CPM_CustomerLocationVisited;
+DROP TABLE IF EXISTS T_CPM_CustomerLocationSearched;
+DROP TABLE IF EXISTS T_CPM_CustomerRecommendationFeedback;
+DROP TABLE IF EXISTS T_CPM_CustomerFavorite;
+DROP TABLE IF EXISTS T_CPM_CustomerPersonalityTrait;
+DROP TABLE IF EXISTS T_CPM_CustomerActivity;
+DROP TABLE IF EXISTS T_CPM_CustomerAsset;
+DROP TABLE IF EXISTS T_CPM_RestaurantVisitFood;
+DROP TABLE IF EXISTS T_CPM_RestaurantVisit;
+DROP TABLE IF EXISTS T_CPM_CustomerExperience;
+DROP TABLE IF EXISTS T_CPM_CustomerPreference;
+DROP TABLE IF EXISTS T_CPM_ItineraryDetails;
+DROP TABLE IF EXISTS T_CPM_Itinerary;
+DROP TABLE IF EXISTS T_CPM_Vibe;
+
+DROP TABLE IF EXISTS T_CPM_PreferenceMaster;
+DROP TABLE IF EXISTS T_CPM_FoodMaster;
+DROP TABLE IF EXISTS T_CPM_RestaurantMaster;
+DROP TABLE IF EXISTS T_CPM_AssetMaster;
+DROP TABLE IF EXISTS T_CPM_ActivityMaster;
+DROP TABLE IF EXISTS T_CPM_ActivityTypeMaster;
+DROP TABLE IF EXISTS T_CPM_EventMaster;
+DROP TABLE IF EXISTS T_CPM_OperatorMaster;
+DROP TABLE IF EXISTS T_CPM_BookingMaster;
+DROP TABLE IF EXISTS T_CPM_CustomerMaster;
+
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerMaster
+-- -----------------------------------------------------
 CREATE TABLE T_CPM_CustomerMaster(
 	Customer_Id INT NOT NULL,
 	Customer_FirstName VARCHAR(500) NULL,
@@ -29,34 +75,633 @@ CREATE TABLE T_CPM_CustomerMaster(
 	Last_Updated_On DATETIME NULL,
 	PRIMARY KEY (Customer_Id)
 );
-CREATE TABLE T_CPM_Preference(
+
+-- -----------------------------------------------------
+-- Table T_CPM_BookingMaster 
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_BookingMaster(
+	Booking_Id INT NOT NULL,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Category VARCHAR(200) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	PrimaryGuest_Customer_Id INT NULL,
+	PrimaryGuest_CustomerRelationship VARCHAR(200) NULL,
+	Arrival_Date Date NULL,					
+	Arrival_Time Time NULL,					
+	Departure_Date Date NULL,				
+	Departure_Time Time NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Booking_Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_PreferenceMaster
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_PreferenceMaster(
 	Preference_Id INT NOT NULL,
-	Preference_Type VARCHAR(500) NULL,	-- Lifestyle | Sport | Privacy | Restaurant | Food
-	Preference_Name VARCHAR(500) NULL,	-- Music | Golf | SMS | Hotel Sun | Pasta
+	Preference_Type VARCHAR(500) NULL,
+	Preference_Name VARCHAR(500) NULL,
 	Preference_Description VARCHAR(500) NULL,
 	Created_On DATETIME NULL DEFAULT current_timestamp(),
 	Last_Updated_On DATETIME NULL,
 	PRIMARY KEY (Preference_Id)
 );
 
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerPreference
+-- -----------------------------------------------------
 CREATE TABLE T_CPM_CustomerPreference(
 	Id INT NOT NULL AUTO_INCREMENT,
 	Customer_Id INT NOT NULL,
 	Customer_FirstName VARCHAR(500) NULL,
 	Customer_LastName VARCHAR(500) NULL,
 	Customer_MiddleName VARCHAR(500) NULL,
-	Customer_Type VARCHAR(200) NULL,	-- Primary Guest | Family Member
+	Customer_Type VARCHAR(200) NULL,
 	Preference_Id INT NULL,
-	Preference_Type VARCHAR(500) NULL,	-- Lifestyle | Sport | Privacy | Restaurant | Food
-	Preference_Name VARCHAR(500) NULL,	-- Music | Golf | SMS | Hotel Sun | Pasta
+	Preference_Type VARCHAR(500) NULL,
+	Preference_Name VARCHAR(500) NULL,
+	Preference_Weightage DOUBLE NULL,
 	Preference_CreatedOn DATETIME NULL,
 	Preference_LastUpdatedOn DATETIME NULL,					
-	IsActive boolean NULL,	-- Y | N
-	IsLike boolean NULL,	-- Y | N
+	IsActive VARCHAR(1) NULL,
+	IsLike VARCHAR(1) NULL,
 	Created_On DATETIME NULL DEFAULT current_timestamp(),
 	Last_Updated_On DATETIME NULL,
-	PRIMARY KEY (Id)
-	--FOREIGN KEY (Customer_Id) REFERENCES T_CPM_Customer(Customer_Id),
-	--FOREIGN KEY (Preference_Id) REFERENCES T_CPM_Preference(Preference_Id)
-); 
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id),
+	FOREIGN KEY (Preference_Id) REFERENCES T_CPM_PreferenceMaster(Preference_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerFavorite
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerFavorite(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Favorite_Type VARCHAR(200) NULL,
+	Favorite_Name VARCHAR(500) NULL,
+	Favorite_SetDate Date NULL,					
+	IsActive VARCHAR(1) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerPersonalityTrait
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerPersonalityTrait(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Personality VARCHAR(500) NULL,
+	Habits VARCHAR(500) NULL,
+	Emotions VARCHAR(500) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerCommunity
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerCommunity(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Community_Id INT NULL,
+	Community_Name VARCHAR(200) NULL,
+	Community_Description VARCHAR(500) NULL,
+	NumberOfMembers INT NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerDiagnosisHistory
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerDiagnosisHistory(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	DateOfConsultation DATE NULL,
+	Diagnosis VARCHAR(500) NULL,
+	DoctorName VARCHAR(500) NULL,
+	ConsultationDescription VARCHAR(500) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerHealth
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerHealth(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Allergy VARCHAR(500) NULL,
+	Medication VARCHAR(500) NULL,
+	Customer_Condition VARCHAR(500) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerRelative
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerRelative(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Relative_Id INT NULL,	
+	Relative_Name VARCHAR(500) NULL,
+	Relationship VARCHAR(200) NULL,
+	Phone_Number VARCHAR(50) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerRecommendationFeedback
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerRecommendationFeedback(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Recommendation_Id INT NULL,	
+	Recommendation_Category VARCHAR(200) NULL,
+	Feedback VARCHAR(500) NULL,
+	Suggestion VARCHAR(500) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_AssetMaster
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_AssetMaster(
+	Asset_Id INT NOT NULL,
+	Asset_Type VARCHAR(500) NULL,
+	Asset_Name VARCHAR(500) NOT NULL, 
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Asset_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerAsset
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerAsset(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Asset_Id INT NULL,
+	Asset_Type VARCHAR(500) NULL,
+	Asset_Name VARCHAR(500) NULL,
+	Asset_UseDate Date NULL,
+	Asset_UseStartTime Time NULL,					
+	Asset_UseEndTime Time NULL,
+	Total_Time_Spent DOUBLE NULL,
+	Total_Time_Spent_Unit VARCHAR(100) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id),
+	FOREIGN KEY (Asset_Id) REFERENCES T_CPM_AssetMaster(Asset_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_RestaurantMaster
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_RestaurantMaster(
+	Restaurant_Id INT NOT NULL,
+	Restaurant_Name VARCHAR(500) NOT NULL,
+	Restaurant_Location	VARCHAR(500) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Restaurant_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_FoodMaster
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_FoodMaster(
+	Food_Id INT NOT NULL,
+	Food_Name VARCHAR(500) NOT NULL,
+	Food_Level INT NULL,
+	Parent_Food_Id INT NULL,
+	Parent_Food_Name VARCHAR(500) NULL,
+	Parent_Food_Level INT NULL,
+	Restaurant_Id INT NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Food_Id),
+	FOREIGN KEY (Restaurant_Id) REFERENCES T_CPM_RestaurantMaster(Restaurant_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_RestaurantVisit
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_RestaurantVisit(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Restaurant_Id INT NULL,
+	Restaurant_Name VARCHAR(500) NULL,	
+	Restaurant_VisitDate Date NULL,
+	Restaurant_Rating DOUBLE NULL,
+	Food_Rating DOUBLE NULL,
+	Staff_Rating DOUBLE NULL,
+	Ambience_Rating DOUBLE NULL,
+	Hygiene_Rating DOUBLE NULL,
+	Resaurant_Weightage DOUBLE NULL,
+	IsLike VARCHAR(1) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id),
+	FOREIGN KEY (Restaurant_Id) REFERENCES T_CPM_RestaurantMaster(Restaurant_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_RestaurantVisitFood
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_RestaurantVisitFood(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Restaurant_Id INT NULL,
+	Restaurant_Name VARCHAR(500) NULL,	
+	Restaurant_VisitDate Date NULL,
+	Food_Id INT NULL,
+	Food_Name VARCHAR(500) NULL,
+	Food_Level INT NULL,
+	Food_Weightage DOUBLE NULL,
+	Food_Rating DOUBLE NULL,
+	IsLike VARCHAR(1) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id),
+	FOREIGN KEY (Restaurant_Id) REFERENCES T_CPM_RestaurantMaster(Restaurant_Id),
+	FOREIGN KEY (Food_Id) REFERENCES T_CPM_FoodMaster(Food_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_ActivityTypeMaster
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_ActivityTypeMaster(
+	ActivityType_Id INT NOT NULL,
+	Activity_Type VARCHAR(500) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (ActivityType_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_ActivityMaster
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_ActivityMaster(
+	Activity_Id INT NOT NULL,
+	ActivityType_Id INT NULL,
+	Activity_Type VARCHAR(500) NULL,
+	Activity_Name VARCHAR(500) NOT NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Activity_Id),
+	FOREIGN KEY (ActivityType_Id) REFERENCES T_CPM_ActivityTypeMaster(ActivityType_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerActivity
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerActivity(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	ActivityType_Id INT NULL,
+	Activity_Type VARCHAR(500) NULL,
+	Activity_Id INT NULL,
+	Activity_Name VARCHAR(500) NULL,
+	Activity_Date Date NULL,
+	Activity_StartTime Time NULL,					
+	Activity_EndTime Time NULL,
+	Total_Time_Spent DOUBLE NULL,
+	Total_Time_Spent_Unit VARCHAR(100) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id),
+	FOREIGN KEY (Activity_Id) REFERENCES T_CPM_ActivityMaster(Activity_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_OperatorMaster
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_OperatorMaster(
+	Operator_Id INT NOT NULL,
+	Operator_Name VARCHAR(500) NOT NULL,	
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Operator_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_EventMaster
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_EventMaster(
+	Event_Id INT NOT NULL,
+	Operator_Id INT NULL,
+	Operator_Name VARCHAR(500) NULL,	
+	Event_Name VARCHAR(500) NULL,
+	Event_Category VARCHAR(500) NULL,			
+	Event_Description VARCHAR(500) NULL,
+	Event_StartDate Date NULL,					
+	Event_StartTime Time NULL,					
+	Event_EndDate Date NULL,				
+	Event_EndTime Time NULL,				
+	Event_Location_Latitude DOUBLE NULL,
+	Event_Location_Longitude DOUBLE NULL,
+	Event_Status VARCHAR(200) NULL,
+	Event_Rating VARCHAR(100) NULL,
+	Weather VARCHAR(500) NULL,
+	Event_Capacity INT NULL,		
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Event_Id),
+	FOREIGN KEY (Operator_Id) REFERENCES T_CPM_OperatorMaster(Operator_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_Vibe
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_Vibe(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Event_Id INT NULL,
+	Event_Name VARCHAR(500) NULL,
+	Event_Category VARCHAR(500) NULL,			
+	Event_Status VARCHAR(100) NULL,
+	Occupancy_Factor DOUBLE NULL,
+	SeatsBookingAvailability DOUBLE NULL,	
+	Review DOUBLE NULL,
+	Vibe VARCHAR(200) NULL,
+	Vibe_RecordTime Time NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id),
+	FOREIGN KEY (Event_Id) REFERENCES T_CPM_EventMaster(Event_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerLocationVisited
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerLocationVisited(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Latitude DOUBLE NULL,
+	Longitude DOUBLE NULL,
+	Zone VARCHAR(500) NULL,
+	OccupancyFactor DOUBLE NULL,
+	VisitedOn DATETIME NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerLocationSearched
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerLocationSearched(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Booking_Id INT NULL,
+	Latitude DOUBLE NULL,
+	Longitude DOUBLE NULL,
+	Zone VARCHAR(500) NULL,
+	OccupancyFactor DOUBLE NULL,
+	LastSearched DATETIME NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Table T_CPM_Itinerary
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_Itinerary(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Booking_Id INT  NULL,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+
+-- -----------------------------------------------------
+-- Table T_CPM_ItineraryDetails
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_ItineraryDetails(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Itinerary_Id INT NOT NULL,
+	Booking_Id INT  NULL,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Event_Id INT NULL,
+	Operator_Id INT NULL,
+	Operator_Name VARCHAR(500) NULL,	
+	Event_Name VARCHAR(500) NULL,
+	Event_Category VARCHAR(500) NULL,			
+	Event_Description VARCHAR(500) NULL,
+	Event_StartDate Date NULL,					
+	Event_StartTime Time NULL,					
+	Event_EndDate Date NULL,				
+	Event_EndTime Time NULL,				
+	Event_Location_Latitude DOUBLE NULL,
+	Event_Location_Longitude DOUBLE NULL,
+	Event_Status VARCHAR(200) NULL,
+	Event_Rating DOUBLE NULL,
+	Event_Attend_Date Date NULL,
+	Event_Last_Attended_Date Date NULL,
+	Distance_Travelled DOUBLE NULL,
+	Operator_Rating DOUBLE NULL,
+	Weather VARCHAR(500) NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Itinerary_Id) REFERENCES T_CPM_Itinerary(Id)
+);
+
+
+-- -----------------------------------------------------
+-- Table T_CPM_CustomerExperience
+-- -----------------------------------------------------
+CREATE TABLE T_CPM_CustomerExperience(
+	Id INT NOT NULL AUTO_INCREMENT,
+	Booking_Id INT NULL,
+	Customer_Id INT NOT NULL,	
+	Customer_FirstName VARCHAR(500) NULL,
+	Customer_LastName VARCHAR(500) NULL,
+	Customer_MiddleName VARCHAR(500) NULL,
+	Customer_Type VARCHAR(200) NULL,
+	Customer_Age INT NULL,
+	Customer_Gender VARCHAR(50) NULL,
+	Event_Id INT NULL,
+	Operator_Id INT NULL,
+	Operator_Name VARCHAR(500) NULL,	
+	Event_Name VARCHAR(500) NULL,
+	Event_Category VARCHAR(500) NULL,
+	Event_Description VARCHAR(500) NULL,
+	Event_Attend_Date Date NULL,
+	Asset_Id INT NULL,
+	Asset_Name VARCHAR(500) NULL,
+	Asset_Type VARCHAR(500) NULL,
+	Asset_UseDate Date NULL,
+	Activity_Id INT NULL,
+	Activity_Type VARCHAR(500) NULL,
+	Activity_Name VARCHAR(500) NULL,	 
+	Activity_Date Date NULL,
+	Feedback VARCHAR(500) NULL,
+	Suggestion VARCHAR(500) NULL,
+	IsNotifyToOperator VARCHAR(1) NULL,
+	Quality DOUBLE NULL,
+	Facilities DOUBLE NULL,
+	Staff DOUBLE NULL,
+	Service DOUBLE NULL,
+	Operator_Rating DOUBLE NULL,
+	Event_Rating DOUBLE NULL,
+	Asset_Rating DOUBLE NULL,
+	Activity_Rating DOUBLE NULL,
+	Overall_Rating DOUBLE NULL,
+	Created_On DATETIME NULL DEFAULT current_timestamp(),
+	Last_Updated_On DATETIME NULL,
+	PRIMARY KEY (Id),
+	FOREIGN KEY (Customer_Id) REFERENCES T_CPM_CustomerMaster(Customer_Id)
+);
+
+-- -----------------------------------------------------
+-- Create User for UG DB and Grant privilege
+-- -----------------------------------------------------
+
+CREATE USER IF NOT EXISTS 'ugdev' IDENTIFIED BY 'Ugdev@2023#';
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerMaster		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_EventMaster			TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_PreferenceMaster		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_BookingMaster			TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_Vibe					TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_Itinerary				TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_ItineraryDetails		TO 'ugdev'@'%';
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerPreference	TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerExperience	TO 'ugdev'@'%';
+
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_OperatorMaster		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_RestaurantMaster		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_FoodMaster			TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_RestaurantVisit		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_RestaurantVisitFood	TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_AssetMaster			TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerAsset			TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_ActivityTypeMaster	TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_ActivityMaster		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerActivity		TO 'ugdev'@'%';
+
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerFavorite						TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerPersonalityTrait				TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerRecommendationFeedback		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerLocationVisited		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerLocationSearched		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerCommunity				TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerDiagnosisHistory		TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerHealth				TO 'ugdev'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE on T_CPM_CustomerRelative				TO 'ugdev'@'%';
 
