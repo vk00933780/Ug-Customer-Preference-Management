@@ -6,10 +6,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ug.cpm.entity.Customer;
+import com.ug.cpm.entity.CustomerBookingHistory;
+import com.ug.cpm.entity.CustomerPersonalityTraits;
 import com.ug.cpm.entity.CustomerPreference;
 import com.ug.cpm.entity.Preference;
+import com.ug.cpm.repository.BookingHistoryRepository;
 import com.ug.cpm.repository.CustomerPreferenceRepository;
 import com.ug.cpm.repository.CustomerRepository;
+import com.ug.cpm.repository.PersonalityTraitsRepository;
 import com.ug.cpm.repository.PreferenceRepository;
 import com.ug.cpm.util.CustomerUtil;
 
@@ -20,22 +24,24 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class NeomWebDataServiceImpl implements NeomWebDataService {
 	
 	private CustomerRepository customerRepository;
-	
 	private CustomerPreferenceRepository customerPreferenceRepository;
-	
 	private PreferenceRepository preferenceRepository;
+	private PersonalityTraitsRepository personalityTraitsRepository;
+	private BookingHistoryRepository bookingRepository;
 
 	@Override
-	@Transactional
 	public void saveCustomerData(String customerData) throws Exception {
 		
 		log.info("In Save Customer Data service");
 		
 		Customer customer = CustomerUtil.parseCustomer(customerData);
 		List<CustomerPreference> customerPreferences = CustomerUtil.parseCustomerPreference(customerData, customer);
+		List<CustomerBookingHistory> customerBookingHistory = CustomerUtil.parseCustomerBookingHistory(customerData, customer);
+		CustomerPersonalityTraits customerPersonalityTraits = CustomerUtil.parseCustomerPersonalityTraits(customerData, customer);
 		
 		log.info("After parsing customer : "+ customer.toString());
 		
@@ -50,10 +56,13 @@ public class NeomWebDataServiceImpl implements NeomWebDataService {
 				preference.setPreferenceId(customerpref.getPreferenceId());
 				preference.setPreferenceType(customerpref.getPreferenceType());
 				preference.setPreferenceName(customerpref.getPreferenceName());
-				//preference.setPreferenceDescription(customerpref.getPreferenceDesciption());
+				//preference.setPreferenceDescription(customerpref.getPreferenceDescription());
 				preferenceRepository.save(preference);
 			}	
 		}
+		
+		personalityTraitsRepository.save(customerPersonalityTraits);
+		bookingRepository.saveAll(customerBookingHistory);
 		customerPreferenceRepository.saveAll(customerPreferences);
 	}
 
