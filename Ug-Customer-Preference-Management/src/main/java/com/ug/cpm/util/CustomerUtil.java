@@ -8,6 +8,8 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ug.cpm.entity.Customer;
+import com.ug.cpm.entity.CustomerBookingHistory;
+import com.ug.cpm.entity.CustomerPersonalityTraits;
 import com.ug.cpm.entity.CustomerPreference;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +22,7 @@ public class CustomerUtil {
 	public static final Customer parseCustomer(String inputJsn) throws Exception {
 
 		log.info("In Customer Util:parseCustomer");
-		JSONObject json = getJson(inputJsn);
+		JSONObject json = JsonUtils.getJson(inputJsn);
 
 		Customer customer = mapper.readValue(json.toString(), Customer.class);
 		log.info("customer : "+ customer.toString());
@@ -33,7 +35,7 @@ public class CustomerUtil {
 		
 		List<CustomerPreference> preferences = new ArrayList<>();
 		
-		JSONObject json = getJson(inputJsn);
+		JSONObject json = JsonUtils.getJson(inputJsn);
 		
 		JSONArray jsonArr = json.getJSONArray("preferences");
  
@@ -50,26 +52,48 @@ public class CustomerUtil {
 		}
 		return preferences;
 	}
-
-	public static final JSONObject getJson(String input) {
-
-		log.info("input json : "+ input);
-
-		JSONObject json = new JSONObject();
-
-		try {
-			if(input !=null && input.length() > 0)
-			{
-				log.info("input json is present");
-				json = new JSONObject(input);
-				log.info("json : "+ json);
-			}
+	
+	public static List<CustomerBookingHistory> parseCustomerBookingHistory(String inputJsn, Customer customer) throws Exception {
+		
+		log.info("In CustomerBookingHistory Util:parseCustomerBookingHistory");
+		
+		List<CustomerBookingHistory> bookingHistory = new ArrayList<>();
+		
+		JSONObject json = JsonUtils.getJson(inputJsn);
+		
+		JSONArray jsonArr = json.getJSONArray("bookingHistory");
+ 
+		for(int i=0; i<jsonArr.length(); i++) {
+			
+			JSONObject bookingHistoryJson = (JSONObject) jsonArr.get(i);
+			CustomerBookingHistory customerBookingHistory = mapper.readValue(bookingHistoryJson.toString(), CustomerBookingHistory.class);
+			customerBookingHistory.setCustomerId(customer.getCustomerId());
+			customerBookingHistory.setCustomerFirstName(customer.getCustomerFirstName());
+			customerBookingHistory.setCustomerLastName(customer.getCustomerLastName());
+			customerBookingHistory.setCustomerMiddleName(customer.getCustomerMiddleName());
+			customerBookingHistory.setCustomerType(customer.getCustomerType());
+			
+			bookingHistory.add(customerBookingHistory);
 		}
-		catch(Exception e) {
-
-			log.error("Exception in converting string to JSONObject! "+ e);
-		}
-
-		return json;
+		
+		return bookingHistory;
 	}
+
+	public static CustomerPersonalityTraits parseCustomerPersonalityTraits(String inputJsn, Customer customer) throws Exception {
+		
+		log.info("In Customer Personality Traits Util:parseCustomerPersonalityTraits");
+
+		JSONObject json = JsonUtils.getJson(inputJsn);
+		JSONObject personalityJson = json.getJSONObject("personalityTraits");
+		
+		CustomerPersonalityTraits personalityTraits = mapper.readValue(personalityJson.toString(), CustomerPersonalityTraits.class);
+		personalityTraits.setCustomerId(customer.getCustomerId());
+		personalityTraits.setCustomerFirstName(customer.getCustomerFirstName());
+		personalityTraits.setCustomerLastName(customer.getCustomerLastName());
+		personalityTraits.setCustomerMiddleName(customer.getCustomerMiddleName());
+		personalityTraits.setCustomerType(customer.getCustomerType());
+		
+		return personalityTraits;
+	}
+
 }
