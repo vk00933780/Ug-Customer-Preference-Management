@@ -25,8 +25,8 @@ This is a sample spring boot version 3 application for Unified Guest which will 
 3. Run below maven command to create package
     
     ```bash
-    mvn package java -jar target/spring-boot-rest-api-tutorial-0.0.1-SNAPSHOT.jar
+    mvn package java -jar target/Customer-Preference-Management-0.0.1-SNAPSHOT.jar
     ```
-
+The app will start running at <http://localhost:8180>.
     
     
