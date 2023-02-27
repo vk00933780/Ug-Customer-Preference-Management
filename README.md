@@ -37,7 +37,38 @@ The app will start running at <http://localhost:8180>.
 
 | Method | Url | Description | Sample Valid Request Body |
 | ------ | --- | ----------- | ------------------------- |
-| POST    | /api/v1/cpm | add customer data for Neom website and Booking platform | |
+| POST    | /api/v1/cpm | add customer data for Neom website and Booking platform | [JSON](#customerInfo) |
 | PUT    | /api/v1/cpm/{customerId} | update customer data for a customer with provided customerId | |
 | GET    | /api/v1/cpm | get all customer data which includes preference, booking, personality trait data | |
 | GET    | /api/v1/cpm/{customerId} | get customer data with provided customerId | |
+
+## Sample Valid JSON Request Bodys
+
+##### <a id="customerInfo">Add Customer Preference Data -> /api/v1/cpm</a>
+```json
+{
+    "customerId": 0,
+    "customerFirstName": null,
+    "customerLastName": null,
+    "customerMiddleName": null,
+    "preferredName": null,
+    "primaryContactNumber": null,
+    "secondaryContactNumner": null,
+    "address": null,
+    "emailId": null,
+    "age": 0,
+    "dateOfBirth": null,
+    "gender": null,
+    "race": null,
+    "religion": null,
+    "maritalStatus": null,
+    "ethnicity": null,
+    "hobbies": null,
+    "customerType": null,
+    "primaryGuestId": 0,
+    "primaryGuestRelationship": null,
+    "createdDate": null,
+    "updatedDated": null
+  }
+```
+
