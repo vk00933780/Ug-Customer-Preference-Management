@@ -1,5 +1,8 @@
 package com.ug.cpm.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,6 +17,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "T_CPM_BookingMaster")
 public class CustomerBookingHistory {
 	

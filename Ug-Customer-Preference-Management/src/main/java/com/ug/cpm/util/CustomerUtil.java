@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ug.cpm.entity.Customer;
 import com.ug.cpm.entity.CustomerBookingHistory;
-import com.ug.cpm.entity.CustomerPersonalityTraits;
+import com.ug.cpm.entity.CustomerPersonalityTrait;
 import com.ug.cpm.entity.CustomerPreference;
 
 import lombok.extern.slf4j.Slf4j;
@@ -79,14 +79,14 @@ public class CustomerUtil {
 		return bookingHistory;
 	}
 
-	public static CustomerPersonalityTraits parseCustomerPersonalityTraits(String inputJsn, Customer customer) throws Exception {
+	public static CustomerPersonalityTrait parseCustomerPersonalityTraits(String inputJsn, Customer customer) throws Exception {
 		
 		log.info("In Customer Personality Traits Util:parseCustomerPersonalityTraits");
 
 		JSONObject json = JsonUtils.getJson(inputJsn);
 		JSONObject personalityJson = json.getJSONObject("personalityTraits");
 		
-		CustomerPersonalityTraits personalityTraits = mapper.readValue(personalityJson.toString(), CustomerPersonalityTraits.class);
+		CustomerPersonalityTrait personalityTraits = mapper.readValue(personalityJson.toString(), CustomerPersonalityTrait.class);
 		personalityTraits.setCustomerId(customer.getCustomerId());
 		personalityTraits.setCustomerFirstName(customer.getCustomerFirstName());
 		personalityTraits.setCustomerLastName(customer.getCustomerLastName());

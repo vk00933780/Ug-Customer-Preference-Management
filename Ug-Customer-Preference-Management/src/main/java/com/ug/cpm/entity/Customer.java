@@ -1,6 +1,7 @@
 package com.ug.cpm.entity;
 
-import java.util.List;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,6 +19,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "T_CPM_CustomerMaster")
 @JsonIgnoreProperties(value = {"preferences", "personalityTraits", "bookingHistory"})
 public class Customer {
