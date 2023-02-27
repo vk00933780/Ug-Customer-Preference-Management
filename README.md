@@ -1,7 +1,32 @@
 # Ug-Customer-Preference-Management
-This is a sample spring boot application for Unified Guest which will capture the Neom customer preference data from Neom source systems and store in Unified Guest DB
+This is a sample spring boot version 3 application for Unified Guest which will capture the Neom customer preference data from Neom source systems and store in Unified Guest DB
 
 # Project Architecture
 
 ![Neom Unified Guest - Understanding chart (2)](https://user-images.githubusercontent.com/124668010/220737014-8d7f2693-a88e-4ddf-a7e0-546c8bdfee6a.png)
 
+# Pre-Requisite
+1. Java Development Kit 17 or above
+2. Java IDE Eclipse/STS/IntelliJ Idea
+3. Maven 3.x verison or above
+4. Postman to test the API
+
+# Steps to Setup
+1. Clone the application
+
+    https://github.com/vk00933780/Ug-Customer-Preference-Management.git
+
+2. Import the code in IDE of your choice (Eclipse/STS/IntelliJ Idea) and run below command for building the project:
+    
+   ```bash
+    mvn clean install
+   ```
+
+3. Run below maven command to create package
+    
+    ```bash
+    mvn package java -jar target/spring-boot-rest-api-tutorial-0.0.1-SNAPSHOT.jar
+    ```
+
+    
+    
