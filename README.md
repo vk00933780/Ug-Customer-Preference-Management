@@ -14,7 +14,9 @@ This is a sample spring boot version 3 application for Unified Guest which will 
 # Steps to Setup
 1. Clone the application
 
+     ```bash
     https://github.com/vk00933780/Ug-Customer-Preference-Management.git
+    ```
 
 2. Import the code in IDE of your choice (Eclipse/STS/IntelliJ Idea) and run below command for building the project:
     
@@ -28,5 +30,14 @@ This is a sample spring boot version 3 application for Unified Guest which will 
     mvn package java -jar target/Customer-Preference-Management-0.0.1-SNAPSHOT.jar
     ```
 The app will start running at <http://localhost:8180>.
-    
-    
+  
+# Explore Rest APIs
+
+### Users
+
+| Method | Url | Description | Sample Valid Request Body |
+| ------ | --- | ----------- | ------------------------- |
+| POST    | /api/v1/cpm | add customer data for Neom website and Booking platform | |
+| PUT    | /api/v1/cpm/{customerId} | update customer data for a customer with provided customerId | |
+| GET    | /api/v1/cpm | get all customer data which includes preference, booking, personality trait data | |
+| GET    | /api/v1/cpm/{customerId} | get customer data with provided customerId | |
