@@ -47,28 +47,40 @@ The app will start running at <http://localhost:8180>.
 ##### <a id="customerInfo">1. Add Customer Preference Data -> /api/v1/cpm</a>
 ```json
 {
-    "customerId": 0,
-    "customerFirstName": null,
-    "customerLastName": null,
-    "customerMiddleName": null,
-    "preferredName": null,
-    "primaryContactNumber": null,
-    "secondaryContactNumner": null,
-    "address": null,
-    "emailId": null,
-    "age": 0,
-    "dateOfBirth": null,
-    "gender": null,
-    "race": null,
-    "religion": null,
-    "maritalStatus": null,
-    "ethnicity": null,
-    "hobbies": null,
-    "customerType": null,
-    "primaryGuestId": 0,
-    "primaryGuestRelationship": null,
-    "createdDate": null,
-    "updatedDated": null
-  }
+	"customerId": 101,
+	"customerFirstName": "John",
+	"customerLastName": "Doe",
+	"primaryContactNumber": "112345678",
+	"address": "CA, USA",
+	"emailId": "John_Doe@gmail.com",
+	"age": 45,
+
+    "personalityTraits": {
+
+        "personality": "An interovert person",
+        "habits": "drawing, cooking",
+        "emotions": "Lives far from kids"
+    },
+
+    "preferences": [
+        {
+            "preferenceId": 1,
+            "preferenceName": "Bungee Jumping",
+            "preferenceType" : "Adventure Sport",
+            "preferenceDescription": "Tie a rope around your waist and jump from a cliff shouting your lungs out"
+
+        }
+    ],
+    "bookingHistory": [
+        {
+            "bookingId": 1002,
+            "arrivalDate": "2021-03-05",
+            "arrivalTime": "13:30:40",
+            "departureDate": "2021-03-15",
+            "departureTime": "10:30:10"
+        }
+    ]
+	
+}
 ```
 
