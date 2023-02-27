@@ -33,7 +33,7 @@ The app will start running at <http://localhost:8180>.
   
 # Explore Rest APIs
 
-### Users
+### CustomerPerferenceManagement (cpm)
 
 | Method | Url | Description | Sample Valid Request Body |
 | ------ | --- | ----------- | ------------------------- |
