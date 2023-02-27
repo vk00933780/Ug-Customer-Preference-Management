@@ -44,7 +44,7 @@ The app will start running at <http://localhost:8180>.
 
 ## Sample Valid JSON Request Bodys
 
-##### <a id="customerInfo">Add Customer Preference Data -> /api/v1/cpm</a>
+##### <a id="customerInfo">1. Add Customer Preference Data -> /api/v1/cpm</a>
 ```json
 {
     "customerId": 0,
