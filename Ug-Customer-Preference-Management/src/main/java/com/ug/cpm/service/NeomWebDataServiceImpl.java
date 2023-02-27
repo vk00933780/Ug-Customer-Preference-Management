@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ug.cpm.dto.CustomerData;
 import com.ug.cpm.entity.Customer;
 import com.ug.cpm.entity.CustomerBookingHistory;
-import com.ug.cpm.entity.CustomerPersonalityTraits;
+import com.ug.cpm.entity.CustomerPersonalityTrait;
 import com.ug.cpm.entity.CustomerPreference;
 import com.ug.cpm.entity.Preference;
 import com.ug.cpm.repository.BookingHistoryRepository;
@@ -41,7 +42,7 @@ public class NeomWebDataServiceImpl implements NeomWebDataService {
 		Customer customer = CustomerUtil.parseCustomer(customerData);
 		List<CustomerPreference> customerPreferences = CustomerUtil.parseCustomerPreference(customerData, customer);
 		List<CustomerBookingHistory> customerBookingHistory = CustomerUtil.parseCustomerBookingHistory(customerData, customer);
-		CustomerPersonalityTraits customerPersonalityTraits = CustomerUtil.parseCustomerPersonalityTraits(customerData, customer);
+		CustomerPersonalityTrait customerPersonalityTraits = CustomerUtil.parseCustomerPersonalityTraits(customerData, customer);
 		
 		log.info("After parsing customer : "+ customer.toString());
 		
@@ -99,15 +100,15 @@ public class NeomWebDataServiceImpl implements NeomWebDataService {
 	}
 
 	@Override
-	public Customer getCustomer(int customerId) throws Exception {
+	public CustomerData getCustomer(int customerId) throws Exception {
 		
-		return customerRepository.findByCustomerId(customerId);
+		return customerRepository.getCustomerDataById(customerId);
 	}
 
 	@Override
-	public List<Customer> getAllCustomer() {
+	public List<CustomerData> getAllCustomer() {
 		
-		return customerRepository.findAll();
+		return customerRepository.getAllCustomerData();
 	}
 
 }

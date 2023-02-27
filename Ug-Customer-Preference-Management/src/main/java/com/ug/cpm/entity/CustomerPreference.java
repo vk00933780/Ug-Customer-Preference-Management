@@ -1,5 +1,8 @@
 package com.ug.cpm.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -17,6 +20,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "T_CPM_CustomerPreference")
 @JsonIgnoreProperties(value = {"preferenceDescription"})
 public class CustomerPreference {
