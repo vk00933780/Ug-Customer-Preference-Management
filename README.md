@@ -46,41 +46,129 @@ The app will start running at <http://localhost:8180>.
 
 ##### <a id="customerInfo">1. Add Customer Preference Data -> /api/v1/cpm</a>
 ```json
-{
-	"customerId": 101,
-	"customerFirstName": "John",
-	"customerLastName": "Doe",
-	"primaryContactNumber": "112345678",
-	"address": "CA, USA",
-	"emailId": "John_Doe@gmail.com",
-	"age": 45,
-
-    "personalityTraits": {
-
-        "personality": "An interovert person",
-        "habits": "drawing, cooking",
-        "emotions": "Lives far from kids"
+[
+    {
+        "customerId": 101,
+        "customerFirstName": "John",
+        "customerLastName": "Doe",
+        "customerMiddleName": M,
+        "preferredName": Johny,
+        "primaryContactNumber": "112345678",
+        "secondaryContactNumner": null,
+        "address": "CA, USA",
+        "emailId": "John_Doe@gmail.com",
+        "age": 45,
+        "dateOfBirth": "1980-05-02",
+        "gender": "male",
+        "race": "white",
+        "religion": "christianity",
+        "maritalStatus": "married",
+        "ethnicity": "Non Hispanic",
+        "hobbies": "Music Listening",
+        "customerType": "Family",
+        "primaryGuestId": 103,
+        "primaryGuestRelationship": "wife",
+        "createdDate": "2023-02-27 12:41:04",
+        "updatedDated": null,
+        "personalityTraits": {
+            "customerId": 101,
+            "personality": "An interovert person",
+            "habits": "drawing, cooking",
+            "emotions": "Lives far from kids"
+        },
+        "preferences": [
+            {
+                "preferenceId": 2,
+                "customerId": 101,
+                "preferenceType": "Lifestyle",
+                "preferenceName": "Long Walks",
+                "preferenceCreatedDate": null,
+                "preferenceUpdatedDate": null,
+                "active": false,
+                "like": false
+            },
+            {
+                "preferenceId": 1,
+                "customerId": 101,
+                "preferenceType": "Adventure Sport",
+                "preferenceName": "Bungee Jumping",
+                "preferenceCreatedDate": null,
+                "preferenceUpdatedDate": null,
+                "active": false,
+                "like": false
+            }
+        ],
+        "bookingHistory": [
+            {
+                "bookingId": 1002,
+                "customerId": 101,
+                "arrivalDate": "2021-03-05",
+                "arrivalTime": "13:30:40",
+                "departureDate": "2021-03-15",
+                "departureTime": "10:30:10"
+            },
+            {
+                "bookingId": 1001,
+                "customerId": 101,
+                "arrivalDate": "2022-10-02",
+                "arrivalTime": "22:00:30",
+                "departureDate": "2022-10-10",
+                "departureTime": "08:30:20"
+            }
+        ]
     },
-
-    "preferences": [
-        {
-            "preferenceId": 1,
-            "preferenceName": "Bungee Jumping",
-            "preferenceType" : "Adventure Sport",
-            "preferenceDescription": "Tie a rope around your waist and jump from a cliff shouting your lungs out"
-
-        }
-    ],
-    "bookingHistory": [
-        {
-            "bookingId": 1002,
-            "arrivalDate": "2021-03-05",
-            "arrivalTime": "13:30:40",
-            "departureDate": "2021-03-15",
-            "departureTime": "10:30:10"
-        }
-    ]
-	
-}
+    {
+        "customerId": 102,
+        "customerFirstName": "Mike",
+        "customerLastName": "James",
+        "customerMiddleName": "K",
+        "preferredName": "Micky J",
+        "primaryContactNumber": "2485753838",
+        "secondaryContactNumner": "6767584933",
+        "address": "NY, USA",
+        "emailId": "Mike_James@gmail.com",
+        "age": 35,
+        "dateOfBirth": "1967-11-03",
+        "gender": "male",
+        "race": "African American",
+        "religion": "Muslim",
+        "maritalStatus": "married",
+        "ethnicity": "Latino",
+        "hobbies": "Gardening",
+        "customerType": "Friends",
+        "primaryGuestId": 0,
+        "primaryGuestRelationship": null,
+        "createdDate": "2023-02-27 19:03:09",
+        "updatedDated": null,
+        "personalityTraits": {
+            "customerId": 102,
+            "personality": "Social Person",
+            "habits": "Party, Reading",
+            "emotions": "Emotionally Strong"
+        },
+        "preferences": [
+            {
+                "preferenceId": 3,
+                "customerId": 102,
+                "preferenceType": "Food",
+                "preferenceName": "Thai Cuisine",
+                "preferenceCreatedDate": null,
+                "preferenceUpdatedDate": null,
+                "active": false,
+                "like": false
+            }
+        ],
+        "bookingHistory": [
+            {
+                "bookingId": 1003,
+                "customerId": 102,
+                "arrivalDate": "2022-08-10",
+                "arrivalTime": "10:40:40",
+                "departureDate": "2022-08-25",
+                "departureTime": "01:30:10"
+            }
+        ]
+    }
+]
 ```
 
