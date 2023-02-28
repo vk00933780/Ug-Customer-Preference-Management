@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ug.cpm.dto.CustomerData;
+import com.ug.cpm.dto.CustomerDto;
 import com.ug.cpm.entity.Customer;
 import com.ug.cpm.service.NeomWebDataService;
 
@@ -47,7 +48,21 @@ public class BookingDataConsumer {
 		neomDataService.deleteCustomer(customerId);
 	}
 	
+	@GetMapping
+	public List<CustomerDto> getAllCustomerData() throws Exception {
+		
+		log.info("in get All Customer Data");
+		return neomDataService.getAllCustomerData();
+	}
+	
 	@GetMapping("/{customerId}")
+	public CustomerDto getCustomer(@PathVariable int customerId) throws Exception {
+		
+		log.info("in getCustomerData with ID: "+ customerId);
+		return neomDataService.getCustomerData(customerId);
+	}
+	
+	/*@GetMapping("/{customerId}")
 	public CustomerData getCustomer(@PathVariable int customerId) throws Exception {
 		
 		log.info("in getCustomerData with ID: "+ customerId);
@@ -59,6 +74,8 @@ public class BookingDataConsumer {
 		
 		log.info("in get All Customer Data");
 		return neomDataService.getAllCustomer();
-	}
+	}*/
+	
+	
 	
 }

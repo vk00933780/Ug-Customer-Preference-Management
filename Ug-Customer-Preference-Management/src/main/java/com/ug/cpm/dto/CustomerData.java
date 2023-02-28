@@ -1,5 +1,7 @@
 package com.ug.cpm.dto;
 
+import java.util.List;
+
 import com.ug.cpm.entity.Customer;
 import com.ug.cpm.entity.CustomerBookingHistory;
 import com.ug.cpm.entity.CustomerPersonalityTrait;
@@ -9,6 +11,6 @@ public interface CustomerData {
 
 	Customer getCustomer();
 	CustomerPersonalityTrait getCustomerPersonalityTrait();
-	CustomerBookingHistory getCustomerBookingHistory();
-	CustomerPreference getCustomerPreference();
+	List<CustomerBookingHistory> getCustomerBookingHistory();
+	List<CustomerPreference> getCustomerPreference();
 }
