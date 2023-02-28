@@ -6,12 +6,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ug.cpm.dto.CustomerData;
+import com.ug.cpm.dto.CustomerDto;
 import com.ug.cpm.entity.Customer;
 import com.ug.cpm.entity.CustomerBookingHistory;
 import com.ug.cpm.entity.CustomerPersonalityTrait;
 import com.ug.cpm.entity.CustomerPreference;
 import com.ug.cpm.entity.Preference;
 import com.ug.cpm.repository.BookingHistoryRepository;
+import com.ug.cpm.repository.CustomerDtoRepository;
 import com.ug.cpm.repository.CustomerPreferenceRepository;
 import com.ug.cpm.repository.CustomerRepository;
 import com.ug.cpm.repository.PersonalityTraitsRepository;
@@ -33,6 +35,7 @@ public class NeomWebDataServiceImpl implements NeomWebDataService {
 	private PreferenceRepository preferenceRepository;
 	private PersonalityTraitsRepository personalityTraitsRepository;
 	private BookingHistoryRepository bookingRepository;
+	private CustomerDtoRepository customerDtoRepository;
 
 	@Override
 	public void saveCustomerData(String customerData) throws Exception {
@@ -109,6 +112,18 @@ public class NeomWebDataServiceImpl implements NeomWebDataService {
 	public List<CustomerData> getAllCustomer() {
 		
 		return customerRepository.getAllCustomerData();
+	}
+	
+	@Override
+	public List<CustomerDto> getAllCustomerData() {
+		
+		return customerDtoRepository.getAllCustomerData();
+	}
+	
+	@Override
+	public CustomerDto getCustomerData(int customerId) {
+		
+		return customerDtoRepository.getCustomerData(customerId);
 	}
 
 }

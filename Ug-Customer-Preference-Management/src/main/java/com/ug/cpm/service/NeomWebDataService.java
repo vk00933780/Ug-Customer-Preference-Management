@@ -3,6 +3,7 @@ package com.ug.cpm.service;
 import java.util.List;
 
 import com.ug.cpm.dto.CustomerData;
+import com.ug.cpm.dto.CustomerDto;
 import com.ug.cpm.entity.Customer;
 
 public interface NeomWebDataService {
@@ -13,5 +14,7 @@ public interface NeomWebDataService {
 	void deleteCustomer(int customerId) throws Exception;
 	CustomerData getCustomer(int customerId) throws Exception;
 	List<CustomerData> getAllCustomer();
+	List<CustomerDto> getAllCustomerData();
+	CustomerDto getCustomerData(int customerId);
 	
 }
